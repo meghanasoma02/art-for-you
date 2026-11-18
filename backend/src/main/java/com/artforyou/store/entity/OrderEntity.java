@@ -34,7 +34,8 @@ public class OrderEntity {
     private String paymentTransactionId;
 
     private String paymentScreenshotPath;
-
+    @Column(columnDefinition = "text")
+    private String preparedPhotos;
     private String paymentStatus = "NOT_SUBMITTED";
     private LocalDateTime createdAt;
 
@@ -66,7 +67,9 @@ public class OrderEntity {
     public String getPaymentScreenshotPath() {
         return paymentScreenshotPath;
     }
-
+    public String getPreparedPhotos() {
+        return preparedPhotos;
+    }
     public String getPaymentStatus() {
         return paymentStatus;
     }
@@ -97,4 +100,7 @@ public class OrderEntity {
         trackingId = v;
     }
     public void setStatus(String v) { status = v; }
+    public void setPreparedPhotos(String v) {
+        preparedPhotos = v;
+    }
 }

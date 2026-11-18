@@ -36,6 +36,7 @@ public class OrderController {
     private final ProductRepository products;
     private final ObjectMapper mapper;
     private final Path uploadDir = Paths.get("uploads", "payment-proofs");
+    private final Path preparedPhotosDir = Paths.get("uploads", "prepared-orders");
     public OrderController(
         OrderRepository orders,
         ProductRepository products,
@@ -100,8 +101,7 @@ public class OrderController {
 
             order.setItems(mapper.writeValueAsString(savedItems));
             order.setTotalAmount(total);
-            order.setAdvanceAmount((total + 1) / 2);
-
+order.setAdvanceAmount(total);
             OrderEntity savedOrder = orders.save(order);
 
             return ResponseEntity.ok(Map.of(
@@ -247,8 +247,75 @@ public class OrderController {
             return ResponseEntity.internalServerError()
                     .body(Map.of("message", "Unable to upload payment screenshot"));
         }
+        
     }
+    @PostMapping("/{id}/prepared-photos")
+    public ResponseEntity<?> uploadPreparedPhotos(
+            @PathVariable Long id,
+            @RequestParam("files") MultipartFile[] files) {
 
+        try {
+            OrderEntity order = orders.findById(id).orElse(null);
+
+            if (order == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (files == null || files.length == 0) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Please select photos"));
+            }
+
+            Files.createDirectories(preparedPhotosDir);
+
+            List<String> photoPaths = new ArrayList<>();
+
+            if (order.getPreparedPhotos() != null
+                    && !order.getPreparedPhotos().isBlank()) {
+                photoPaths.addAll(
+                        Arrays.asList(mapper.readValue(
+                                order.getPreparedPhotos(), String[].class))
+                );
+            }
+
+            for (MultipartFile file : files) {
+                if (file.isEmpty() || file.getSize() > 5 * 1024 * 1024) {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", "Each photo must be under 5 MB"));
+                }
+
+                String contentType = file.getContentType();
+
+                if (contentType == null ||
+                        !Arrays.asList("image/jpeg", "image/png", "image/webp")
+                                .contains(contentType)) {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", "Only JPG, PNG and WEBP photos are allowed"));
+                }
+
+                String fileName = UUID.randomUUID() + "_" +
+                        Paths.get(file.getOriginalFilename()).getFileName();
+
+                Path target = preparedPhotosDir.resolve(fileName);
+
+                file.transferTo(target);
+
+                photoPaths.add(target.toString().replace("\\", "/"));
+            }
+
+            order.setPreparedPhotos(mapper.writeValueAsString(photoPaths));
+            orders.save(order);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Prepared photos uploaded successfully",
+                    "photos", photoPaths
+            ));
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("message", "Photo upload failed"));
+        }
+    }
 @GetMapping("/{id}/payment-proof")
 public ResponseEntity<Resource> getPaymentProof(@PathVariable Long id) {
     try {

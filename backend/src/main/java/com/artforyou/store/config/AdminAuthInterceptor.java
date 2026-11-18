@@ -36,6 +36,11 @@ public class AdminAuthInterceptor implements HandlerInterceptor {
                 && uri.matches(".*/api/orders/\\d+/payment-proof")) {
             return true;
         }
+     // Allow customers to view their own orders
+        if ("GET".equalsIgnoreCase(method)
+                && "/api/orders/my-orders".equals(uri)) {
+            return true;
+        }
 
         // Check admin login for all other protected requests
         HttpSession session = request.getSession(false);

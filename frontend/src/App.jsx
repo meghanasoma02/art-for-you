@@ -482,23 +482,20 @@ function Home() {
           {/* Order Confirmation */}
           {orderConfirmation && (
             <div className="order-success">
-              <h2>🎉 Order Placed Successfully!</h2>
+              <h2>Order Details Submitted - Payment Pending</h2>
 
               <p>
                 <b>Order ID:</b> #{orderConfirmation.orderId}
               </p>
 
-              <p>
-                <b>Total Amount:</b>{' '}
-                {money(orderConfirmation.totalAmount)}
-              </p>
+          
 
-              <p>
-                <b>Advance Payment (50%):</b>{' '}
-                {money(orderConfirmation.advanceAmount)}
-              </p>
+             <p>
+  <b>Full Payment Amount:</b>{' '}
+  {money(orderConfirmation.totalAmount)}
+</p>
 
-              <h3>Pay Advance Using PhonePe</h3>
+              <h3>Pay Full Amount Using PhonePe</h3>
 
               <img
                 src="/assets/images/phonepe-qr.jpeg"
@@ -507,9 +504,9 @@ function Home() {
               />
 
               <p>
-                Scan this QR code using PhonePe and pay
-                the advance amount.
-              </p>
+  Scan this QR code using PhonePe and pay
+  the full order amount.
+</p>
 
               <p>
                 After payment, please share your payment
@@ -608,9 +605,7 @@ function Home() {
                 <b>Total:</b> {money(order.totalAmount)}
               </p>
 
-              <p>
-                <b>Advance:</b> {money(order.advanceAmount)}
-              </p>
+            
 
               <p>
                 <b>Status:</b> {order.status}
