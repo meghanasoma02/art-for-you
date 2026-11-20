@@ -14,6 +14,14 @@ public class OrderEntity {
 
     private String customerName;
     private String mobile;
+    private String whatsappNumber;
+    private String instagramId;
+    private String razorpayOrderId;
+    private String razorpayPaymentId;
+    @Column(columnDefinition = "text")
+    private String changeRequest;
+    private String changeRequestStatus = "NONE";
+    private Integer extraWorkCharge;
    
 
     @Column(columnDefinition = "text")
@@ -37,6 +45,12 @@ public class OrderEntity {
     @Column(columnDefinition = "text")
     private String preparedPhotos;
     private String paymentStatus = "NOT_SUBMITTED";
+    private Integer deliveryCharge;
+    private String deliveryPaymentStatus = "NOT_REQUESTED";
+    private String deliveryPaymentTransactionId;
+    private String deliveryPaymentScreenshotPath;
+    private String trackingUrl;
+    private LocalDateTime receivedAt;
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -47,6 +61,13 @@ public class OrderEntity {
     public Long getId() { return id; }
     public String getCustomerName() { return customerName; }
     public String getMobile() { return mobile; }
+    public String getWhatsappNumber() { return whatsappNumber; }
+    public String getInstagramId() { return instagramId; }
+    public String getRazorpayOrderId() { return razorpayOrderId; }
+    public String getRazorpayPaymentId() { return razorpayPaymentId; }
+    public String getChangeRequest() { return changeRequest; }
+    public String getChangeRequestStatus() { return changeRequestStatus; }
+    public Integer getExtraWorkCharge() { return extraWorkCharge; }
    
     public String getAddress() { return address; }
     public String getCity() { return city; }
@@ -70,9 +91,13 @@ public class OrderEntity {
     public String getPreparedPhotos() {
         return preparedPhotos;
     }
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
+    public String getPaymentStatus() { return paymentStatus; }
+    public Integer getDeliveryCharge() { return deliveryCharge; }
+    public String getDeliveryPaymentStatus() { return deliveryPaymentStatus; }
+    public String getDeliveryPaymentTransactionId() { return deliveryPaymentTransactionId; }
+    public String getDeliveryPaymentScreenshotPath() { return deliveryPaymentScreenshotPath; }
+    public String getTrackingUrl() { return trackingUrl; }
+    public LocalDateTime getReceivedAt() { return receivedAt; }
 
     public void setPaymentTransactionId(String v) {
         paymentTransactionId = v;
@@ -82,12 +107,23 @@ public class OrderEntity {
         paymentScreenshotPath = v;
     }
 
-    public void setPaymentStatus(String v) {
-        paymentStatus = v;
-    }
+    public void setPaymentStatus(String v) { paymentStatus = v; }
+    public void setDeliveryCharge(Integer v) { deliveryCharge = v; }
+    public void setDeliveryPaymentStatus(String v) { deliveryPaymentStatus = v; }
+    public void setDeliveryPaymentTransactionId(String v) { deliveryPaymentTransactionId = v; }
+    public void setDeliveryPaymentScreenshotPath(String v) { deliveryPaymentScreenshotPath = v; }
+    public void setTrackingUrl(String v) { trackingUrl = v; }
+    public void setReceivedAt(LocalDateTime v) { receivedAt = v; }
 
     public void setCustomerName(String v) { customerName = v; }
     public void setMobile(String v) { mobile = v; }
+    public void setWhatsappNumber(String v) { whatsappNumber = v; }
+    public void setInstagramId(String v) { instagramId = v; }
+    public void setRazorpayOrderId(String v) { razorpayOrderId = v; }
+    public void setRazorpayPaymentId(String v) { razorpayPaymentId = v; }
+    public void setChangeRequest(String v) { changeRequest = v; }
+    public void setChangeRequestStatus(String v) { changeRequestStatus = v; }
+    public void setExtraWorkCharge(Integer v) { extraWorkCharge = v; }
    
     public void setAddress(String v) { address = v; }
     public void setCity(String v) { city = v; }

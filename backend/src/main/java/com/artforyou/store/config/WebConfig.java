@@ -23,7 +23,18 @@ public class WebConfig implements WebMvcConfigurer {
             "/api/orders/*/status",
             "/api/orders/*/tracking",
             "/api/orders/*/payment-proof",
-            "/api/orders/*/payment-status"
+            "/api/orders/*/payment-status",
+            "/api/orders/*/delivery-payment-proof",
+            "/api/orders/*/prepared-photos",
+            "/api/orders/*/delivery-charge",
+            "/api/orders/*/delivery-payment-status",
+            "/api/orders/*/change-request",
+            "/api/products/admin",
+            "/api/products/admin/*",
+            "/api/products/admin/*/active",
+            "/api/collections/admin",
+            "/api/collections/admin/*",
+            "/api/collections/admin/*/active"
         );
     }
 }

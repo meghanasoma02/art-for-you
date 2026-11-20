@@ -31,6 +31,11 @@ public class AdminAuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        // Allow customers to submit change requests for their order (mobile is checked by controller).
+        if ("POST".equalsIgnoreCase(method) && uri.matches(".*/api/orders/\\d+/change-request")) {
+            return true;
+        }
+
         // Allow customers to upload payment screenshots
         if ("POST".equalsIgnoreCase(method)
                 && uri.matches(".*/api/orders/\\d+/payment-proof")) {
@@ -38,7 +43,18 @@ public class AdminAuthInterceptor implements HandlerInterceptor {
         }
      // Allow customers to view their own orders
         if ("GET".equalsIgnoreCase(method)
-                && "/api/orders/my-orders".equals(uri)) {
+                && ("/api/orders/my-orders".equals(uri)
+                    || uri.matches(".*/api/orders/prepared-photo/[^/]+"))) {
+            return true;
+        }
+
+        // Customers can submit delivery payment proof and confirm receipt
+        if ("POST".equalsIgnoreCase(method)
+                && uri.matches(".*/api/orders/\\d+/delivery-payment-proof")) {
+            return true;
+        }
+        if ("PUT".equalsIgnoreCase(method)
+                && uri.matches(".*/api/orders/\\d+/received")) {
             return true;
         }
 
